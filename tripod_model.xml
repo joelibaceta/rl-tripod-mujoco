@@ -1,0 +1,74 @@
+<mujoco model="tripod_robot">
+  <compiler angle="degree" coordinate="local"/>
+  <option gravity="0 0 -9.81" integrator="Euler" timestep="0.01"/>
+
+<default>
+  <geom friction="0.1 0.005 0.005"
+        density="500"
+        condim="3"         
+        margin="0.002"/>
+    <joint armature="0.01" damping="1" limited="true"/>
+</default>
+
+<visual>
+  <map znear="0.01" zfar="100"/>
+</visual>
+  <worldbody>
+  
+  <geom name="floor"
+        type="plane"
+        pos="0 0 -0.01"
+        size="0 0 1"              
+        friction="1.0 0.5 0.5"
+        rgba="0.8 0.8 0.8 1"/>
+    <!-- Cuerpo central -->
+    <body name="torso" pos="0 0 0.15">
+ 
+      <joint name="root_free" type="free"/>
+
+      <geom type="sphere" size="0.03" density="500" rgba="0.6 0.6 0.6 1" condim="3"/>
+
+      <!-- Pierna 1 -->
+      <body name="leg1" pos="0.035 0 0">
+        <joint name="hip1" type="hinge" axis="0 1 0" limited="true" range="-30 30" />
+        <geom type="capsule" fromto="0 0 0 0 0 -0.05" density="500" size="0.01" rgba="0.2 0.5 0.8 1"/>
+        <body name="leg1_lower" pos="0 0 -0.05">
+          <joint name="knee1" type="hinge" axis="0 1 0" limited="true" range="0 45" />
+          <geom type="capsule" fromto="0 0 0 0 0 -0.05" density="500" size="0.009" rgba="0.1 0.3 0.6 1" friction="2.0 1.0 0.1"/>
+        </body>
+      </body>
+
+      <!-- Pierna 2 (rotada 120°) -->
+      <body name="leg2" pos="-0.0175 0.03 0" euler="0 0 120">
+        <joint name="hip2" type="hinge" axis="0 1 0" limited="true" range="-30 30" />
+        <geom type="capsule" fromto="0 0 0 0 0 -0.05" density="500" size="0.01" rgba="0.8 0.2 0.5 1"/>
+        <body name="leg2_lower" pos="0 0 -0.05">
+          <joint name="knee2" type="hinge" axis="0 1 0" limited="true" range="0 45" />
+          <geom type="capsule" fromto="0 0 0 0 0 -0.05" density="500" size="0.009" rgba="0.6 0.1 0.4 1" friction="2.0 1.0 0.1"/>
+        </body>
+      </body>
+
+      <!-- Pierna 3 (rotada -120°) -->
+      <body name="leg3" pos="-0.0175 -0.03 0" euler="0 0 -120">
+        <joint name="hip3" type="hinge" axis="0 1 0" limited="true" range="-30 30"/>
+        <geom type="capsule" fromto="0 0 0 0 0 -0.05" density="500" size="0.01" rgba="0.2 0.8 0.2 1"/>
+        <body name="leg3_lower" pos="0 0 -0.05">
+          <joint name="knee3" type="hinge" axis="0 1 0" limited="true" range="0 45"/>
+          <geom type="capsule" fromto="0 0 0 0 0 -0.05" density="500" size="0.009" rgba="0.1 0.5 0.1 1" friction="2.0 1.0 0.1"/>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <!-- Caderas -->
+    <position name="hip1_servo" joint="hip1" kp="50" ctrlrange="-50 -10"/>
+    <position name="hip2_servo" joint="hip2" kp="50" ctrlrange="-50 -10"/>
+    <position name="hip3_servo" joint="hip3" kp="50" ctrlrange="-50 -10"/>
+
+    <!-- Rodillas -->
+    <position name="knee1_servo" joint="knee1" kp="30" ctrlrange="0 30"/>
+    <position name="knee2_servo" joint="knee2" kp="30" ctrlrange="0 30"/>
+    <position name="knee3_servo" joint="knee3" kp="30" ctrlrange="0 30"/>
+  </actuator>
+</mujoco>
