@@ -1,0 +1,13 @@
+# Physics and simulation
+mujoco
+
+# RL environment interface
+gymnasium[all]
+
+# Reinforcement Learning algorithms
+stable-baselines3[extra] 
+
+matplotlib>=3.7.0
+imageio>=2.31.0
+imageio-ffmpeg>=0.4.8
+opencv-python
